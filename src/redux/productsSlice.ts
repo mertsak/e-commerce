@@ -20,10 +20,12 @@ export interface ProductsState {
   products: IProduct[];
   basketProducts: IProduct[];
   totalAmount: number; // Yeni state alanı
+  allProducts: IProduct[];
 }
 
 const initialState: ProductsState = {
-  products: ProductsData,
+  products: ProductsData, // Filtrelenen ürünler
+  allProducts: ProductsData, // Orijinal ürün listesi
   basketProducts: [], // İlk başta boş bırak
   totalAmount: 0, // İlk başta 0 bırak
 };
@@ -131,6 +133,15 @@ const productsSlice = createSlice({
         );
       }
     },
+    searchProducts: (state, action) => {
+      if (action.payload === "") {
+        state.products = state.allProducts; // Eğer input boşsa orijinal listeyi geri yükle
+      } else {
+        state.products = state.allProducts.filter((product) =>
+          product.name.toLowerCase().includes(action.payload.toLowerCase())
+        );
+      }
+    },
   },
 });
 
@@ -140,5 +151,6 @@ export const {
   incrementQuantity,
   decrementQuantity,
   deleteToBasket,
+  searchProducts,
 } = productsSlice.actions;
 export default productsSlice.reducer;

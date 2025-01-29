@@ -1,7 +1,17 @@
+"use client";
 import Link from "next/link";
 import { TbShoppingCartCode } from "react-icons/tb";
+import { useDispatch } from "react-redux";
+import { searchProducts } from "@/redux/productsSlice";
 
 const Header = () => {
+  const dispatch = useDispatch();
+
+  const handleSearchProducts = (searchText: string) => {
+    dispatch(searchProducts(searchText));
+    console.log(searchText);
+  };
+
   return (
     <header className="flex flex-col md:flex-row gap-2 md:gap-8 justify-between items-center h-auto md:h-16 py-2 md:py-0 bg-white text-black shadow-sm font-mono px-4 sm:px-8 lg:px-32 xl:px-48 border-b-2 border-gray-200">
       {/* Top Section: md üstünde left - center - right hizası korunuyor */}
@@ -31,13 +41,11 @@ const Header = () => {
       <div className="w-full flex justify-center items-center py-2 md:py-0 order-2 md:order-none">
         <div className="flex justify-center items-center gap-2 w-full md:w-auto">
           <input
+            onChange={(e) => handleSearchProducts(e.target.value)}
             type="text"
             placeholder="Search"
             className="border-2 border-gray-200 rounded-md px-2 py-1 w-full md:w-auto md:min-w-[300px] lg:min-w-[400px] xl:min-w-[500px]"
           />
-          <button className="bg-black text-white px-2 py-1 rounded-md">
-            Search
-          </button>
         </div>
       </div>
 
