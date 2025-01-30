@@ -2,6 +2,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import productsReducer from "./productsSlice";
 
+// Store'u oluşturuyoruz
 export const store = configureStore({
   reducer: {
     products: productsReducer,

@@ -4,7 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import { deleteToBasket, IProduct } from "@/redux/productsSlice";
 import { useDispatch } from "react-redux";
 import { incrementQuantity, decrementQuantity } from "@/redux/productsSlice";
-import {  toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 interface ProductProps {
   product: IProduct;
@@ -13,10 +13,12 @@ interface ProductProps {
 const BasketProduct: React.FC<ProductProps> = ({ product }) => {
   const dispatch = useDispatch();
 
+  // Sepete ürün eklemek ve adetini artırmak için bir fonksiyon oluşturuyoruz.
   const handleIncrement = () => {
     dispatch(incrementQuantity(product));
   };
 
+  // Sepetteki ürün adetini azaltmak ve ürünü silmek için bir fonksiyon oluşturuyoruz.
   const handleDecrement = () => {
     if (product.quantity === 1) {
       const confirmDelete = window.confirm(
@@ -31,7 +33,7 @@ const BasketProduct: React.FC<ProductProps> = ({ product }) => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined
+          progress: undefined,
         });
       } else {
         return;
@@ -40,6 +42,7 @@ const BasketProduct: React.FC<ProductProps> = ({ product }) => {
     dispatch(decrementQuantity(product));
   };
 
+  // Sepetten ürün silmek için bir fonksiyon oluşturuyoruz.
   const handleDelete = () => {
     const confirmDelete = window.confirm(
       "Bu ürünü silmek istediğinizden emin misiniz?"
@@ -62,6 +65,8 @@ const BasketProduct: React.FC<ProductProps> = ({ product }) => {
 
   return (
     <div className="flex sm:flex-row flex-col justify-start items-center gap-4 w-full border border-gray-300 shadow-sm rounded-md py-4 lg:px-8 px-4">
+
+      {/* Ürün resmi */}
       <div className="border border-gray-300 shadow-sm rounded-md py-2 px-6 mr-4">
         <Image
           src={`/assets/${product.imageFile}/${product.image}`}
@@ -70,9 +75,11 @@ const BasketProduct: React.FC<ProductProps> = ({ product }) => {
           layout="intrinsic"
           width={200}
           height={200}
+          loading="lazy"
         />
       </div>
 
+      {/* Ürün bilgileri */}
       <div className="flex lg:flex-row flex-col justify-between items-center gap-6 w-full">
         <p className="lg:max-w-[450px] w-full">
           <span className="font-bold mr-[2px]">{product.name}</span>
@@ -105,6 +112,7 @@ const BasketProduct: React.FC<ProductProps> = ({ product }) => {
           </button>
         </div>
       </div>
+
     </div>
   );
 };

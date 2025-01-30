@@ -1,3 +1,4 @@
+// projede kullanılan ürünlerin bilgileri burada tutulmaktadır.
 const ProductsData = [
   {
     id: 1,

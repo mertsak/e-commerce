@@ -2,6 +2,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import ProductsData from "./mock/Products.js";
 
+// Ürünlerin tipini belirliyoruz
 export interface IProduct {
   id: number;
   name: string;
@@ -16,6 +17,7 @@ export interface IProduct {
   quantity?: number;
 }
 
+// State tipini belirliyoruz
 export interface ProductsState {
   products: IProduct[];
   basketProducts: IProduct[];
@@ -23,6 +25,7 @@ export interface ProductsState {
   allProducts: IProduct[];
 }
 
+// İlk state değerlerini belirliyoruz
 const initialState: ProductsState = {
   products: ProductsData, // Filtrelenen ürünler
   allProducts: ProductsData, // Orijinal ürün listesi
@@ -34,6 +37,7 @@ const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
+    // State'i güncelleyen fonksiyonları tanımlıyoruz
     setBasketProducts: (state, action) => {
       state.basketProducts = action.payload;
       state.totalAmount = action.payload.reduce(
@@ -42,6 +46,7 @@ const productsSlice = createSlice({
         0
       );
     },
+    // Sepete ürün ekleyen fonksiyon
     addToBasket: (state, action) => {
       const existingProduct = state.basketProducts.find(
         (product) => product.id === action.payload.id
@@ -70,6 +75,7 @@ const productsSlice = createSlice({
         );
       }
     },
+    // Ürün adedini artıran fonksiyon
     incrementQuantity: (state, action) => {
       const existingProduct = state.basketProducts.find(
         (product) => product.id === action.payload.id
@@ -93,6 +99,7 @@ const productsSlice = createSlice({
         );
       }
     },
+    // Ürün adedini azaltan fonksiyon
     decrementQuantity: (state, action) => {
       const existingProduct = state.basketProducts.find(
         (product) => product.id === action.payload.id
@@ -116,6 +123,7 @@ const productsSlice = createSlice({
         );
       }
     },
+    // Sepetten ürün silen fonksiyon
     deleteToBasket: (state, action) => {
       state.basketProducts = state.basketProducts.filter(
         (product) => product.id !== action.payload.id
@@ -133,6 +141,7 @@ const productsSlice = createSlice({
         );
       }
     },
+    // Ürün arama fonksiyonu
     searchProducts: (state, action) => {
       if (action.payload === "") {
         state.products = state.allProducts; // Eğer input boşsa orijinal listeyi geri yükle
@@ -142,6 +151,7 @@ const productsSlice = createSlice({
         );
       }
     },
+    // Ürünleri filtreleyen fonksiyon
     filterProducts: (state, action) => {
       const { brand, category, minPrice, maxPrice, sortOrderPrice } =
         action.payload;

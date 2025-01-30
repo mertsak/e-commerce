@@ -1,5 +1,7 @@
 import { useRouter } from "next/navigation";
 
+// URL'yi güncellemek için bir hook oluşturuyoruz
+
 const useUpdateUrl = () => {
   const router = useRouter();
 

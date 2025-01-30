@@ -19,24 +19,26 @@ const FilterProducts = () => {
   const products = useSelector((state: RootState) => state.products.products);
   const searchParams = useSearchParams();
 
-  // URL'deki mevcut parametreleri alalım
+  // URL'deki mevcut parametreleri alıp state'e atıyoruz
   const [brand, setBrand] = useState(searchParams.get("brand") ?? "all");
   const [category, setCategory] = useState(
     searchParams.get("category") ?? "all"
   );
+
+  // URL'deki fiyat aralığını alıp state'e atıyoruz
   const [price, setPrice] = useState<number[]>([
     Number(searchParams.get("minPrice")) || 0,
     Number(searchParams.get("maxPrice")) || 10000,
   ]);
 
-  // URL'deki sıralama parametresini alalım
+  // URL'deki sıralama parametresini alıp state'e atıyoruz
   const [sortOrderPrice, setSortOrderPrice] = useState(
     searchParams.get("sortOrderPrice") || "lowToHigh"
   );
 
   const updateURL = useUpdateUrl(); // Hook'u kullanıyoruz
 
-  // Filtre değiştiğinde URL'yi güncelle ve store'a gönder
+  // Filtre değiştiğinde URL'yi güncelle ve store'a göndiyoruz
   useEffect(() => {
     updateURL({
       brand,
