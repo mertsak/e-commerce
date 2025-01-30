@@ -178,6 +178,19 @@ const FilterProducts = () => {
           <MenuItem value="highToLow">High to Low</MenuItem>
         </Select>
       </FormControl>
+
+      {/* Reset Filter */}
+      <button
+        onClick={() => {
+          setBrand("all");
+          setCategory("all");
+          setPrice([0, 10000]);
+          setSortOrderPrice("lowToHigh");
+        }}
+        className="bg-red-500 text-white px-4 py-2 rounded-lg mt-4"
+      >
+        Reset Filter
+      </button>
     </div>
   );
 };

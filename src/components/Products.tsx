@@ -22,7 +22,6 @@ const Products = () => {
     setVisibleProducts(allProducts.slice(0, visibleCount));
   }, [visibleCount, allProducts]);
 
-
   // Load More butonuna tıklandığında çalışacak fonksiyon
   const handleLoadMore = () => {
     if (visibleCount >= allProducts.length) {
@@ -35,11 +34,23 @@ const Products = () => {
   return (
     <div className="flex flex-col items-center w-full">
       {/* Ürünleri göstermek için grid oluşturuyoruz */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 w-full">
-        {visibleProducts.map((product) => (
-          <Product key={product.id} product={product} />
-        ))}
-      </div>
+
+      {visibleProducts.length > 0 ? (
+        <>
+          {" "}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 w-full">
+            {visibleProducts.map((product) => (
+              <Product key={product.id} product={product} />
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className="w-full h-[60vh] flex justify-center items-center ">
+          <p className="text-2xl font-semibold text-center mt-6">
+            Filtrelemenize uygun ürün bulunamadı.
+          </p>
+        </div>
+      )}
 
       {/* Load More butonu */}
       <button
