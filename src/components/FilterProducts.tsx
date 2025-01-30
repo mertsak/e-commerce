@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   FormControl,
   InputLabel,
@@ -58,6 +58,16 @@ const FilterProducts = () => {
     );
   }, [brand, category, price, sortOrderPrice]);
 
+  // Ürünlerdeki markaları alıp tekrar etmeyen bir şekilde diziye atıyoruz
+  const brands = useMemo(() => {
+    return [...new Set(products.map((product) => product.brand))];
+  }, [products]);
+
+  // Ürünlerdeki kategorileri alıp tekrar etmeyen bir şekilde diziye atıyoruz
+  const categories = useMemo(() => {
+    return [...new Set(products.map((product) => product.category))];
+  }, [products]);
+
   return (
     <div
       style={{
@@ -92,13 +102,11 @@ const FilterProducts = () => {
           }}
         >
           <MenuItem value="all">All</MenuItem>
-          {[...new Set(products.map((product) => product.brand))].map(
-            (brand) => (
-              <MenuItem key={brand} value={brand}>
-                {brand}
-              </MenuItem>
-            )
-          )}
+          {brands.map((brand: string) => (
+            <MenuItem key={brand} value={brand}>
+              {brand}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 
@@ -123,13 +131,11 @@ const FilterProducts = () => {
         >
           <MenuItem value="all">All</MenuItem>
 
-          {[...new Set(products.map((product) => product.category))].map(
-            (category) => (
-              <MenuItem key={category} value={category}>
-                {category}
-              </MenuItem>
-            )
-          )}
+          {categories.map((category: string) => (
+            <MenuItem key={category} value={category}>
+              {category}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 

@@ -2,8 +2,8 @@
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import Product from "./Product";
-import { useState, useEffect } from "react";
-import { IProduct } from "@/redux/productsSlice";
+import { useState, useMemo } from "react";
+
 
 const INITIAL_LOAD = 10; // İlk açılışta gösterilecek ürün sayısı
 const LOAD_MORE = 5; // Butona tıklandıkça yüklenecek ürün sayısı
@@ -14,12 +14,12 @@ const Products = () => {
   );
 
   // Ürünleri sayfada göstermek için state tanımlıyoruz
-  const [visibleProducts, setVisibleProducts] = useState<IProduct[]>([]);
+  // const [visibleProducts, setVisibleProducts] = useState<IProduct[]>([]);
   const [visibleCount, setVisibleCount] = useState(INITIAL_LOAD);
 
-  // Tüm ürünlerin ilk açılışta gösterilmesi için useEffect kullanıyoruz
-  useEffect(() => {
-    setVisibleProducts(allProducts.slice(0, visibleCount));
+  // Tüm ürünlerin ilk açılışta gösterilecek olan kısmını alıyoruz useMemo ile
+  const visibleProducts = useMemo(() => {
+    return allProducts.slice(0, visibleCount);
   }, [visibleCount, allProducts]);
 
   // Load More butonuna tıklandığında çalışacak fonksiyon
