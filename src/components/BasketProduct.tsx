@@ -4,6 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import { deleteToBasket, IProduct } from "@/redux/productsSlice";
 import { useDispatch } from "react-redux";
 import { incrementQuantity, decrementQuantity } from "@/redux/productsSlice";
+import {  toast } from 'react-toastify';
 
 interface ProductProps {
   product: IProduct;
@@ -23,6 +24,15 @@ const BasketProduct: React.FC<ProductProps> = ({ product }) => {
       );
       if (confirmDelete) {
         dispatch(deleteToBasket(product));
+        toast.error(`${product.name} Removed from cart`, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
       } else {
         return;
       }
@@ -36,6 +46,15 @@ const BasketProduct: React.FC<ProductProps> = ({ product }) => {
     );
     if (confirmDelete) {
       dispatch(deleteToBasket(product));
+      toast.error(`${product.name} Removed from cart`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
       return;
     }

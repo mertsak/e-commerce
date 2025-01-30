@@ -9,9 +9,9 @@ const INITIAL_LOAD = 10; // İlk açılışta gösterilecek ürün sayısı
 const LOAD_MORE = 5; // Butona tıklandıkça yüklenecek ürün sayısı
 
 const Products = () => {
-  const allProducts = useSelector((state: RootState) => state.products.products);
-
-  console.log(allProducts);
+  const allProducts = useSelector(
+    (state: RootState) => state.products.products
+  );
 
   const [visibleProducts, setVisibleProducts] = useState<IProduct[]>([]);
   const [visibleCount, setVisibleCount] = useState(INITIAL_LOAD);
@@ -41,7 +41,9 @@ const Products = () => {
         className="mt-6 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition disabled:opacity-50"
         disabled={visibleCount >= allProducts.length}
       >
-        {visibleCount >= allProducts.length ? "Tüm Ürünler Yüklendi" : "Load More"}
+        {visibleCount >= allProducts.length
+          ? "Tüm Ürünler Yüklendi"
+          : "Load More"}
       </button>
     </div>
   );

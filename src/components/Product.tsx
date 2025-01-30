@@ -2,6 +2,7 @@ import { IProduct } from "@/redux/productsSlice";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { addToBasket } from "@/redux/productsSlice";
+import {  toast } from 'react-toastify';
 
 interface ProductProps {
   product: IProduct;
@@ -11,7 +12,19 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   const dispatch = useDispatch();
 
   const handleAddBasket = (product: IProduct) => {
+
     dispatch(addToBasket(product));
+
+    toast.success(`${product.name} added to cart`, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+
   };
 
   return (

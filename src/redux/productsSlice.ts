@@ -142,6 +142,34 @@ const productsSlice = createSlice({
         );
       }
     },
+    filterProducts: (state, action) => {
+      const { brand, category, minPrice, maxPrice, sortOrderPrice } =
+        action.payload;
+
+      let filteredProducts = state.allProducts;
+
+      if (brand && brand !== "all") {
+        filteredProducts = filteredProducts.filter((p) => p.brand === brand);
+      }
+
+      if (category && category !== "all") {
+        filteredProducts = filteredProducts.filter(
+          (p) => p.category === category
+        );
+      }
+
+      filteredProducts = filteredProducts.filter(
+        (p) => p.price >= minPrice && p.price <= maxPrice
+      );
+
+      if (sortOrderPrice === "lowToHigh") {
+        filteredProducts.sort((a, b) => a.price - b.price);
+      } else if (sortOrderPrice === "highToLow") {
+        filteredProducts.sort((a, b) => b.price - a.price);
+      }
+
+      state.products = filteredProducts;
+    },
   },
 });
 
@@ -152,5 +180,6 @@ export const {
   decrementQuantity,
   deleteToBasket,
   searchProducts,
+  filterProducts,
 } = productsSlice.actions;
 export default productsSlice.reducer;

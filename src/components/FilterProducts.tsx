@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FormControl,
   InputLabel,
@@ -8,11 +8,53 @@ import {
   Slider,
   Typography,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useSearchParams } from "next/navigation";
+import { filterProducts } from "@/redux/productsSlice";
+import useUpdateUrl from "@/hooks/UseUpdateUrl";
 
 const FilterProducts = () => {
+  const dispatch = useDispatch();
   const products = useSelector((state: RootState) => state.products.products);
+  const searchParams = useSearchParams();
+
+  // URL'deki mevcut parametreleri alalım
+  const [brand, setBrand] = useState(searchParams.get("brand") ?? "all");
+  const [category, setCategory] = useState(
+    searchParams.get("category") ?? "all"
+  );
+  const [price, setPrice] = useState<number[]>([
+    Number(searchParams.get("minPrice")) || 0,
+    Number(searchParams.get("maxPrice")) || 10000,
+  ]);
+
+  // URL'deki sıralama parametresini alalım
+  const [sortOrderPrice, setSortOrderPrice] = useState(
+    searchParams.get("sortOrderPrice") || "lowToHigh"
+  );
+
+  const updateURL = useUpdateUrl(); // Hook'u kullanıyoruz
+
+  // Filtre değiştiğinde URL'yi güncelle ve store'a gönder
+  useEffect(() => {
+    updateURL({
+      brand,
+      category,
+      minPrice: price[0].toString(),
+      maxPrice: price[1].toString(),
+      sortOrderPrice,
+    });
+    dispatch(
+      filterProducts({
+        brand,
+        category,
+        minPrice: price[0],
+        maxPrice: price[1],
+        sortOrderPrice,
+      })
+    );
+  }, [brand, category, price, sortOrderPrice]);
 
   return (
     <div
@@ -22,7 +64,7 @@ const FilterProducts = () => {
         borderRadius: "8px",
         boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
       }}
-      className="w-full h-auto"
+      className="w-full h-auto border border-gray-200"
     >
       <Typography variant="h5" gutterBottom>
         Filter Products
@@ -34,9 +76,10 @@ const FilterProducts = () => {
           Brand
         </InputLabel>
         <Select
+          onChange={(e) => setBrand(e.target.value)}
           labelId="brand-label"
           id="brand"
-          defaultValue="all"
+          value={brand}
           MenuProps={{
             PaperProps: {
               style: {
@@ -63,9 +106,10 @@ const FilterProducts = () => {
           Category
         </InputLabel>
         <Select
+          onChange={(e) => setCategory(e.target.value)}
           labelId="category-label"
           id="category"
-          defaultValue="all"
+          value={category}
           MenuProps={{
             PaperProps: {
               style: {
@@ -90,14 +134,30 @@ const FilterProducts = () => {
       {/* Filter by Price */}
       <Typography gutterBottom>Price Range</Typography>
       <Slider
-        defaultValue={1000}
+        value={price} // defaultValue yerine value kullan
+        onChange={(_, newValue) => {
+          if (Array.isArray(newValue)) {
+            setPrice(newValue);
+          }
+        }}
+        onChangeCommitted={(_, newValue) => {
+          if (Array.isArray(newValue)) {
+            updateURL({
+              brand,
+              category,
+              minPrice: newValue[0].toString(),
+              maxPrice: newValue[1].toString(),
+              sortOrderPrice,
+            });
+          }
+        }}
         min={0}
-        max={1000}
-        step={10}
+        max={10000}
+        step={100}
         valueLabelDisplay="auto"
         marks={[
           { value: 0, label: "$0" },
-          { value: 1000, label: "$1000" },
+          { value: 10000, label: "$10000" },
         ]}
       />
 
@@ -107,24 +167,10 @@ const FilterProducts = () => {
           Sort by Price
         </InputLabel>
         <Select
+          onChange={(e) => setSortOrderPrice(e.target.value)}
           labelId="sortPrice-label"
           id="sortPrice"
-          defaultValue="lowToHigh"
-        >
-          <MenuItem value="lowToHigh">Low to High</MenuItem>
-          <MenuItem value="highToLow">High to Low</MenuItem>
-        </Select>
-      </FormControl>
-
-      {/* Sorting numReviews low to high and high to low */}
-      <FormControl fullWidth margin="normal">
-        <InputLabel className="bg-white" id="sortReviews-label">
-          Sort by Reviews
-        </InputLabel>
-        <Select
-          labelId="sortReviews-label"
-          id="sortReviews"
-          defaultValue="lowToHigh"
+          value={sortOrderPrice}
         >
           <MenuItem value="lowToHigh">Low to High</MenuItem>
           <MenuItem value="highToLow">High to Low</MenuItem>

@@ -4,6 +4,8 @@ import "../style/globals.css";
 import Providers from "./providers";
 import Header from "@/components/Header";
 import StoreInitializer from "./localProvider";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +33,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
+          <ToastContainer />
           <StoreInitializer />
           <Header />
 

@@ -1,15 +1,18 @@
 "use client";
 import Link from "next/link";
 import { TbShoppingCartCode } from "react-icons/tb";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { searchProducts } from "@/redux/productsSlice";
+import { RootState } from "@/redux/store";
 
 const Header = () => {
+  const basketProducts = useSelector(
+    (state: RootState) => state.products.basketProducts
+  );
   const dispatch = useDispatch();
 
   const handleSearchProducts = (searchText: string) => {
     dispatch(searchProducts(searchText));
-    console.log(searchText);
   };
 
   return (
@@ -32,7 +35,7 @@ const Header = () => {
           href={`/basket`}
           className="flex justify-center items-center gap-1 md:hidden"
         >
-          <span>My Basket (0)</span>
+          <span>My Basket ({basketProducts.length})</span>
           <TbShoppingCartCode className="text-black text-3xl" />
         </Link>
       </div>
@@ -55,7 +58,9 @@ const Header = () => {
           href={`/basket`}
           className="flex justify-center items-center gap-1"
         >
-          <p className="whitespace-nowrap">My Basket (0)</p>
+          <p className="whitespace-nowrap">
+            My Basket ({basketProducts.length})
+          </p>
           <TbShoppingCartCode className="text-black text-2xl" />
         </Link>
       </div>
