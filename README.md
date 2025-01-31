@@ -12,7 +12,7 @@ I'm a Front-end Developer
 
 ## Demo
 
-https://e-commerce-q9nl1fx2i-mertsaks-projects.vercel.app
+e-commerce-tau-orpin.vercel.app
 
 
 ## Installation
