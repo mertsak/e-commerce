@@ -17,7 +17,7 @@ const Basket = () => {
   // sepeti onaylama ödeme işlemi
   const handleConfirmOrder = () => {
     if (basketProducts && basketProducts.length > 0) {
-      router.push("/success");
+      router.push("/checkout");
     } else {
       Swal.fire({
         icon: "warning",
