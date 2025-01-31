@@ -180,6 +180,14 @@ const productsSlice = createSlice({
 
       state.products = filteredProducts;
     },
+    clearBasket: (state) => {
+      state.basketProducts = [];
+      state.totalAmount = 0;
+
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("basketProducts");
+      }
+    },
   },
 });
 
@@ -191,5 +199,6 @@ export const {
   deleteToBasket,
   searchProducts,
   filterProducts,
+  clearBasket,
 } = productsSlice.actions;
 export default productsSlice.reducer;
