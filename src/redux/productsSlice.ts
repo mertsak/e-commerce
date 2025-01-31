@@ -180,6 +180,7 @@ const productsSlice = createSlice({
 
       state.products = filteredProducts;
     },
+    // sepette ödeme yapıldıysa sepeti boşaltan fonksiyon
     clearBasket: (state) => {
       state.basketProducts = [];
       state.totalAmount = 0;

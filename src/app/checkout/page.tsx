@@ -24,6 +24,8 @@ const Checkout = () => {
   const [error, setError] = useState("");
   const router = useRouter();
 
+
+  // ödeme işlemi
   const handlePayment = () => {
     if (!cardNumber || !expiryDate || !cvv || !name) {
       setError("Please fill in all fields!");
