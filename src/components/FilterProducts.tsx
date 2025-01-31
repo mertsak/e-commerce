@@ -13,6 +13,7 @@ import { RootState } from "@/redux/store";
 import { useSearchParams } from "next/navigation";
 import { filterProducts } from "@/redux/productsSlice";
 import useUpdateUrl from "@/hooks/UseUpdateUrl";
+import Swal from "sweetalert2";
 
 const FilterProducts = () => {
   const dispatch = useDispatch();
@@ -67,6 +68,38 @@ const FilterProducts = () => {
   const categories = useMemo(() => {
     return [...new Set(products.map((product) => product.category))];
   }, [products]);
+
+  // Filtreyi sıfırla
+  const handleResetFilter = () => {
+    Swal.fire({
+      title: "Are you sure you want to delete all filters?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setBrand("all");
+        setCategory("all");
+        setPrice([0, 10000]);
+        setSortOrderPrice("lowToHigh");
+        updateURL({
+          brand: "all",
+          category: "all",
+          minPrice: "0",
+          maxPrice: "10000",
+          sortOrderPrice: "lowToHigh",
+        });
+        Swal.fire({
+          title: "Deleted!",
+          text: "All filters have been deleted.",
+          icon: "success",
+        });
+      }
+    });
+  };
 
   return (
     <div
@@ -187,12 +220,7 @@ const FilterProducts = () => {
 
       {/* Reset Filter */}
       <button
-        onClick={() => {
-          setBrand("all");
-          setCategory("all");
-          setPrice([0, 10000]);
-          setSortOrderPrice("lowToHigh");
-        }}
+        onClick={() => handleResetFilter()}
         className="bg-red-500 text-white px-4 py-2 rounded-lg mt-4"
       >
         Reset Filter

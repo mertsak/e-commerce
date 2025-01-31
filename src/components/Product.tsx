@@ -2,7 +2,7 @@ import { IProduct } from "@/redux/productsSlice";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { addToBasket } from "@/redux/productsSlice";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 interface ProductProps {
   product: IProduct;
@@ -15,14 +15,10 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   const handleAddBasket = (product: IProduct) => {
     dispatch(addToBasket(product));
 
-    toast.success(`${product.name} added to cart`, {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
+    Swal.fire({
+      title: "Added to cart!",
+      text: `${product.name} added to cart.`,
+      icon: "success",
     });
   };
 

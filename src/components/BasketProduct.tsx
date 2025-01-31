@@ -4,7 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import { deleteToBasket, IProduct } from "@/redux/productsSlice";
 import { useDispatch } from "react-redux";
 import { incrementQuantity, decrementQuantity } from "@/redux/productsSlice";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 interface ProductProps {
   product: IProduct;
@@ -21,51 +21,60 @@ const BasketProduct: React.FC<ProductProps> = ({ product }) => {
   // Sepetteki ürün adetini azaltmak ve ürünü silmek için bir fonksiyon oluşturuyoruz.
   const handleDecrement = () => {
     if (product.quantity === 1) {
-      const confirmDelete = window.confirm(
-        "Bu ürünü silmek istediğinizden emin misiniz?"
-      );
-      if (confirmDelete) {
-        dispatch(deleteToBasket(product));
-        toast.error(`${product.name} Removed from cart`, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      } else {
-        return;
-      }
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to remove this product from cart?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(deleteToBasket(product));
+          Swal.fire({
+            title: "Deleted!",
+            text: `${product.name
+              .split(" ")
+              .slice(0, 2)
+              .join(" ")} removed from cart.`,
+            icon: "success",
+          });
+        }
+      });
     }
     dispatch(decrementQuantity(product));
   };
 
   // Sepetten ürün silmek için bir fonksiyon oluşturuyoruz.
   const handleDelete = () => {
-    const confirmDelete = window.confirm(
-      "Bu ürünü silmek istediğinizden emin misiniz?"
-    );
-    if (confirmDelete) {
-      dispatch(deleteToBasket(product));
-      toast.error(`${product.name} Removed from cart`, {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    } else {
-      return;
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to remove this product from cart?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteToBasket(product));
+        Swal.fire({
+          title: "Deleted!",
+          text: `${product.name
+            .split(" ")
+            .slice(0, 2)
+            .join(" ")} removed from cart.`,
+          icon: "success",
+        });
+      }
+    });
   };
 
   return (
     <div className="flex sm:flex-row flex-col justify-start items-center gap-4 w-full border border-gray-300 shadow-sm rounded-md py-4 lg:px-8 px-4">
-
       {/* Ürün resmi */}
       <div className="border border-gray-300 shadow-sm rounded-md py-2 px-6 mr-4">
         <Image
@@ -112,7 +121,6 @@ const BasketProduct: React.FC<ProductProps> = ({ product }) => {
           </button>
         </div>
       </div>
-
     </div>
   );
 };

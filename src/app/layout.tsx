@@ -5,8 +5,6 @@ import "../style/globals.css";
 import Providers from "./providers";
 import Header from "@/components/Header";
 import StoreInitializer from "./localProvider";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Loading from "@/components/Loading";
 
 const geistSans = Geist({
@@ -36,8 +34,6 @@ export default function RootLayout({
       >
         {/* Providers */}
         <Providers>
-          {/* Toast Container */}
-          <ToastContainer />
           {/* Store Initializer */}
           <StoreInitializer />
           {/* Header */}
