@@ -29,7 +29,7 @@ Install my-project with npm
 Projeyi hızlıca çalıştırıp kullanmak için ilk önce projeyi indirin
 daha sonrasında developer ortamında bakmak istiyorsanız terminale
 
-nmr run dev 
+nmp run dev 
 
 yazmanız yeterlidir eğer developer ortamında değil user ortamında incelemek istiyorsanız ilk önce build alın
 
